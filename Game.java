@@ -15,11 +15,9 @@ public class Game {
         }
         this.correctGuesses = word.length();
     }
-
     public int getCorrectGuesses() {
         return correctGuesses;
     }
-
     public String getWord() {
         return word;
     }
@@ -29,7 +27,6 @@ public class Game {
     public String getSolutionCharArr() {
         return String.join("",solutionCharArr);
     }
-
     public String getGuessedDashArr() {
         return String.join(" ",guessedDashArr);
     }
@@ -46,6 +43,7 @@ public class Game {
     }
     private String successfulGuessMessage(boolean successful, String guess){
         String newLine = System.getProperty("line.separator");
+        PictureArr hangManGallows = new PictureArr();
         if (successful){
             return String.join(newLine,
                     guess + ": Is a Correct letter",
@@ -57,10 +55,32 @@ public class Game {
                     guess + ": Is not a Correct letter",
                     "Working Solution: " + getGuessedDashArr(),
                     "Guessed Characters: " + getUsedCharArr(),
-                    "Lives left: " + player.getLives());
+                    "Lives left: " + player.getLives(),
+                    hangManGallows.getHangMan(player.getLives())
+                    );
+
+        }
+    }
+    private boolean charCheck(String guessChar){
+        if (getUsedCharArr().contains(guessChar.toUpperCase())){
+            System.out.println(guessChar.toUpperCase() + " has already been guessed. Please enter a new letter:");
+            System.out.println("Lives left: " + getLives());
+            return false;
+        } else if (!guessChar.matches("[a-zA-Z]+")) {
+            System.out.println(guessChar.toUpperCase() + " is not a letter. Please Guess Letters Only.");
+            System.out.println("Lives left: " + getLives());
+            return false;
+        } else if (guessChar.length()>1) {
+            System.out.println("Please only enter one letter at a time.");
+            System.out.println("Lives left: " + getLives());
+            return false;
+        } else {
+            return true;
         }
     }
     public void guessChar(String guessChar){
+        boolean valid = charCheck(guessChar);
+        if (valid){
         if (word.toUpperCase().contains(guessChar.toUpperCase())){
             int count = 0;
             for (int i = 0; i < solutionCharArr.length; i++) {
@@ -88,6 +108,7 @@ public class Game {
             usedCharArr[guessNum] = guessChar.toUpperCase();
             this.guessNum++;
             System.out.println(successfulGuessMessage(false, guessChar.toUpperCase()));
+        }
         }
     }
 }
