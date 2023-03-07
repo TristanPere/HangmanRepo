@@ -81,7 +81,7 @@ public class Game {
             }
             usedCharArr[guessNum] = guessChar.toUpperCase();
             this.guessNum++;
-            this.correctGuesses--;
+            this.correctGuesses-=count;
             System.out.println(successfulGuessMessage(true, guessChar.toUpperCase()));
         } else {
             this.player.looseLife();
